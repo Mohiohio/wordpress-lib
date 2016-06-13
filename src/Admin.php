@@ -20,7 +20,6 @@ abstract class Admin
         throw new \Exception('must implement this');
     }
 
-
     /**
      * Just pass name which is an assoc array -
      * what you see here are legacy params
@@ -62,7 +61,13 @@ abstract class Admin
             return new Setting\Field($data);
         }, $this->fields);
 
-        new Setting\Page($this->get_settings_namespace(), $this->get_page_name(), $field_objects, null, $this->capability);
+        new Setting\Page([
+            'setting' => $this->get_settings_namespace(),
+            'display_name' => $this->get_page_name(),
+            'intro' => $this->get_intro(),
+            'setting_fields' => $field_objects,
+            'capability' => $this->capability
+        ]);
     }
 
     function get_section(Setting\Section $section=null){
@@ -86,6 +91,10 @@ abstract class Admin
         }
 
         return $section;
+    }
+
+    function get_intro() {
+        return null;
     }
 
     static function get_setting($name,$default=null){
