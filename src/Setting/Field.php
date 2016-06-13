@@ -63,7 +63,8 @@ class Field
                 $props = $this->props += [
                     'id'=> $setting_group.'_'.$this->name,
                     'name' => "{$setting_group}[{$this->name}]",
-                    'placeholder'=> $this->default
+                    'placeholder'=> $this->default,
+                    'type'=>$this->type,
                 ];
 
                 switch($this->display_callback){

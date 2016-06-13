@@ -1,5 +1,5 @@
 <?php
-namespace Mohiohio;
+namespace Mohiohio\WordPress;
 
 class WordPress {
 

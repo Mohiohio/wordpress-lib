@@ -2,7 +2,6 @@
 namespace Mohiohio\WordPress;
 
 use Mohiohio\WordPress\Setting;
-use Mohiohio\WordPress;
 
 abstract class Admin
 {
@@ -43,7 +42,6 @@ abstract class Admin
         if(empty($field['section'])){
             $field['section'] = $this->get_default_section();
         }
-
 
         $this->fields[$field['name']] = $field;
     }
