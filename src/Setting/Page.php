@@ -9,6 +9,7 @@ class Page
             'setting' => '__required',
             'setting_fields' => '__required',
             'display_name' => null,
+            'header' => null,
             'intro' => null,
             'page_callback' => null,
             'capability' => 'manage_options'
@@ -22,16 +23,15 @@ class Page
 
         extract($args);
 
-        add_action('admin_menu', function() use($display_name, $setting, $page_callback, $capability, $intro) {
+        add_action('admin_menu', function() use($display_name, $setting, $page_callback, $capability, $intro, $header) {
 
-            add_options_page($display_name, $display_name, $capability, $setting, function() use ($page_callback, $setting, $display_name, $intro) {
+            add_options_page($display_name, $display_name, $capability, $setting, function() use ($page_callback, $setting, $display_name, $intro, $header) {
 
                 if($page_callback)
                     $page_callback();
                 else { ?>
                     <div class="wrap">
-                        <?php screen_icon(); ?>
-                            <h2><?=$display_name?></h2>
+                            <?php if($header):?><?php echo $header?><?php else:?><h2><?php echo $display_name?></h2><?php endif;?>
                             <?php if($intro): ?>
                                 <?=$intro;?>
                             <?php endif;?>

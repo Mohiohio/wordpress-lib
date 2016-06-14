@@ -63,6 +63,7 @@ abstract class Admin
             'setting' => $this->get_settings_namespace(),
             'display_name' => $this->get_page_name(),
             'intro' => $this->get_intro(),
+            'header' => $this->get_header(),
             'setting_fields' => $field_objects,
             'capability' => $this->capability
         ]);
@@ -92,6 +93,10 @@ abstract class Admin
     }
 
     function get_intro() {
+        return null;
+    }
+
+    function get_header() {
         return null;
     }
 
