@@ -36,7 +36,7 @@ class Router {
                     $res = call_user_func_array($callback,$params);
 
                     if($res === false) {
-                        $this->send_404();
+                        static::send_404();
                     } else {
                         exit();
                     }
