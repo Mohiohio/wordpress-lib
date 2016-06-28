@@ -43,52 +43,35 @@ class Field
 
     function get_display_callback($setting_group) {
 
-        if($this->display_callback && $this->display_callback instanceof \Closure) {
+        $options = get_option($setting_group);
+        $value = isset($options[$this->name]) ? $options[$this->name] : $this->default;
 
-            return function() use ($setting_group) {
+        $props = $this->props += [
+            'id'=> $setting_group.'_'.$this->name,
+            'name' => "{$setting_group}[{$this->name}]",
+            'placeholder'=> $this->default,
+            'type'=>$this->type,
+        ];
 
-                $options = get_option($setting_group);
-                $value = isset($options[$this->name]) ? $options[$this->name] : '';
+        return function() use ($value, $props) {
 
-                call_user_func($this->display_callback, $value, $this->name, $setting_group, $options);
-            };
+            if($this->display_callback instanceof \Closure) {
 
-        } else {
+                call_user_func($this->display_callback, $value, $props);
 
-            return function() use ($setting_group) {
+            } else {
 
-                $options = get_option($setting_group);
-                $value = isset($options[$this->name]) ? $options[$this->name] : $this->default;
+                switch($this->display_callback) {
 
-                $props = $this->props += [
-                    'id'=> $setting_group.'_'.$this->name,
-                    'name' => "{$setting_group}[{$this->name}]",
-                    'placeholder'=> $this->default,
-                    'type'=>$this->type,
-                ];
-
-                switch($this->display_callback){
-
-                case 'textarea':
-
-                    $props += [
-                        'rows'=>10,
-                        'cols'=>50,
-                    ];
-
-                    echo "<textarea ".static::render_props($props)." >{$value}</textarea>";
+                    case 'textarea':
+                    echo static::textarea($value, $props);
                     break;
 
-                default:
-
-                    $props += [
-                        'value' => $value
-                    ];
-
-                    echo "<input ".static::render_props($props)." />";
+                    default:
+                    echo static::input($value, $props);
                 }
-            };
-        }
+            }
+        };
     }
 
     static function render_props($props){
@@ -97,5 +80,19 @@ class Field
         },'');
     }
 
+    static function input($value, $props) {
+        $props += [
+            'value' => $value
+        ];
+        return "<input ".static::render_props($props)." />";
+    }
+
+    static function textarea($value, $props) {
+        $props += [
+            'rows'=>10,
+            'cols'=>50,
+        ];
+        return "<textarea ".static::render_props($props)." >{$value}</textarea>";
+    }
 
 }
