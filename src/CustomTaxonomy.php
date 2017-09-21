@@ -1,6 +1,6 @@
 <?php
 
-namespace TheFold\Mohiohio;
+namespace Mohiohio\WordPress;
 
 class CustomTaxonomy extends QuickConfig
 {
